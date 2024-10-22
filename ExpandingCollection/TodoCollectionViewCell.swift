@@ -76,7 +76,8 @@ class TodoCollectionViewCell: UICollectionViewListCell {
             print("Cannot allocate notification.object as? Task")
             return
         }
-        
+        self.contentView.invalidateIntrinsicContentSize()
+
         if expandedTask != self.task {
             self.expanded = false
             self.showOverlayButton()
@@ -86,10 +87,6 @@ class TodoCollectionViewCell: UICollectionViewListCell {
             UIView.animate(withDuration: 0.20) {
                 self.contentView.layoutIfNeeded()
             }
-//            self.contentView.setNeedsDisplay()
-//            self.contentView.setNeedsLayout()
-//            self.contentView.invalidateIntrinsicContentSize()
-            
         }
         else {
             self.expanded = true
@@ -99,17 +96,15 @@ class TodoCollectionViewCell: UICollectionViewListCell {
             UIView.animate(withDuration: 0.20) {
                 self.contentView.layoutIfNeeded()
             }
-            
-//            self.invalidateIntrinsicContentSize()
-            
         }
+
     }
     
     
     
     func configure() {
         self.clipsToBounds = false
-        self.autoresizesSubviews = true
+        self.autoresizesSubviews = false
         
         
         overlayButton.backgroundColor = self.overlayActive ? UIColor.red : UIColor.green
@@ -146,6 +141,7 @@ class TodoCollectionViewCell: UICollectionViewListCell {
         NotificationCenter.default.post(name: .AutoCollapsingRowsCollapseAll, object: nil)
         self.overlayActive = false
         self.contentView.sendSubviewToBack(self.overlayButton)
+        
 
 
     }
