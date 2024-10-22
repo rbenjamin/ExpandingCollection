@@ -1,9 +1,3 @@
-//
-//  README
-//  ExpandingCollection
-//
-//  Created by Ben Davis on 10/22/24.
-//
 
 Trying to create a UICollectionViewCell that expands and contracts.  I know I can do this with UIHostingConfiguration and SwiftUI,
 which I have (working) in a different project, but want to do this with UICollectionViewCell if possible -- after viewing
