@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            TodoCollectionView(title: "Tasks", selected: $selectedTask)
+            TodoCollectionView()
                 
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {

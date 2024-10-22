@@ -44,52 +44,30 @@ struct Task: Equatable, Hashable {
 
 struct TodoCollectionView: UIViewControllerRepresentable {
     
-    /// Just doing this until, if this works, I switch to using Generics.
-    let title: String
     typealias UIViewControllerType = TodoCollectionViewController
-//    @Binding var items: [Task]
-//    @Binding var items: [Task]
-    @Binding var selected: Task?
 
     
-    init(title: String,
-         selected: Binding<Task?>) {
-        self.title = title
-        _selected = selected
-        
+    init() {
         
     }
         
     func makeUIViewController(context: Context) -> TodoCollectionViewController {
-        let controller = TodoCollectionViewController(title: self.title,
-                                                      selected: self.$selected)
+        let controller = TodoCollectionViewController()
         return controller
     }
     func updateUIViewController(_ collectionController: TodoCollectionViewController, context: Context) {
-        collectionController.selected = self.selected
         
     }
 }
 
 #Preview {
-    TodoCollectionView(title: "Tasks", selected: .constant(nil))
+    TodoCollectionView()
 }
 
 class TodoCollectionViewController: UIViewController {
     
-    let navigationTitle: String
     
-    
-    @Binding var selected: Task?
-    {
-        didSet {
-            for indexPath in collectionView.indexPathsForVisibleItems {
-                if let cell = collectionView.cellForItem(at: indexPath) as? TodoCollectionViewCell {
-                    cell.selectedTask = selected
-                }
-            }
-        }
-    }
+    var selected: Task?
     
     enum Section {
         case main
@@ -103,21 +81,14 @@ class TodoCollectionViewController: UIViewController {
         Task(title: "Item Two", starred: false)
     ]]
     
-//    lazy var tasks: [Section: [Task]] = {
-//        initialStore()
-//    }()
         
     var dataSource: UICollectionViewDiffableDataSource<Section, Task>! = nil
     var collectionView: UICollectionView! = nil
     
     
-     init(title: String,
-          selected: Binding<Task?>
-         ) {
+     init() {
          
-        self.navigationTitle = title
          
-         _selected = selected
          super.init(nibName: nil, bundle: nil)
          
          /// Sent from SwiftUI side, when the EditButton is tapped
@@ -151,7 +122,6 @@ class TodoCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = self.navigationTitle
         
         
         configureHierarchy()
@@ -223,7 +193,7 @@ extension TodoCollectionViewController {
             cell.accessories = [.delete(displayed: .whenEditing, options: UICellAccessory.DeleteOptions(), actionHandler: {
                 self.deleteTask(indexPath: indexPath)
         
-            }), .reorder(displayed: .whenEditing)]
+            })]
  
         }
         
